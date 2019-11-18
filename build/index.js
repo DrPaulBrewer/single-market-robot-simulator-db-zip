@@ -1,20 +1,19 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.StudyFolder = exports.arrayPrefer = undefined;
+exports.StudyFolderForZip = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* Copyright 2018- Paul Brewer, Economic and Financial Technology Consulting LLC */
-/* This file is open source software.  The MIT License applies to this software. */
+var _singleMarketRobotSimulatorOpenzip = require("single-market-robot-simulator-openzip");
 
-/* eslint-disable no-console */
+var _singleMarketRobotSimulatorOpenzip2 = _interopRequireDefault(_singleMarketRobotSimulatorOpenzip);
 
-var _arrayPrefer = require('array-prefer');
+var _singleMarketRobotSimulatorDbStudyfolder = require("single-market-robot-simulator-db-studyfolder");
 
-var _arrayPrefer2 = _interopRequireDefault(_arrayPrefer);
+var _singleMarketRobotSimulatorDbStudyfolder2 = _interopRequireDefault(_singleMarketRobotSimulatorDbStudyfolder);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22,340 +21,177 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-exports.arrayPrefer = _arrayPrefer2.default;
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-var StudyFolder = exports.StudyFolder = function () {
-    function StudyFolder(props) {
-        var _this = this;
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* Copyright 2019- Paul Brewer, Economic and Financial Technology Consulting LLC */
+/* This file is open source software.  The MIT License applies to this software. */
 
-        _classCallCheck(this, StudyFolder);
+/* eslint-disable no-console */
 
-        Object.keys(props).forEach(function (k) {
-            _this[k] = props[k];
-        });
-    }
 
-    _createClass(StudyFolder, [{
-        key: 'getConfig',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                var folder, config, shouldFixName, shouldFixDescription;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                folder = this;
-                                _context.next = 3;
-                                return this.download({ name: 'config.json' });
+var StudyFolderForZip = exports.StudyFolderForZip = function (_StudyFolder) {
+  _inherits(StudyFolderForZip, _StudyFolder);
 
-                            case 3:
-                                config = _context.sent;
-                                shouldFixName = config.name && this.name && this.name.length && config.name !== this.name;
-                                shouldFixDescription = config.description && this.description && this.description.length && config.description !== this.description;
+  function StudyFolderForZip(props) {
+    _classCallCheck(this, StudyFolderForZip);
 
-                                if (shouldFixName) config.name = this.name;
-                                if (shouldFixDescription) config.description = this.description;
+    var _this = _possibleConstructorReturn(this, (StudyFolderForZip.__proto__ || Object.getPrototypeOf(StudyFolderForZip)).call(this, props));
 
-                                if (this.readOnly) {
-                                    _context.next = 12;
-                                    break;
-                                }
+    if (!_this.zipPromise) throw new Error("StudyFolderForZip: zipPromise required");
+    if (!_this.zipName) throw new Error("StudyFolderForZip: zipName required");
+    if (typeof _this.zipSize !== 'number') throw new Error("StudyFolderForZip: zipSize required");
+    _this.readOnly = true;
+    if (!_this.name) _this.name = "External .zip file: " + _this.zipName;
+    if (!_this.description) _this.description = '';
+    return _this;
+  }
 
-                                if (!(shouldFixName || shouldFixDescription)) {
-                                    _context.next = 12;
-                                    break;
-                                }
+  _createClass(StudyFolderForZip, [{
+    key: "getConfig",
+    value: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var folder, data, config;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                folder = this;
 
-                                _context.next = 12;
-                                return this.upload({
-                                    name: 'config.json',
-                                    contents: config,
-                                    force: true
-                                });
+                if (folder.config) {
+                  _context.next = 8;
+                  break;
+                }
 
-                            case 12:
-                                return _context.abrupt('return', { config: config, folder: folder });
+                _context.next = 4;
+                return (0, _singleMarketRobotSimulatorOpenzip2.default)(this.zipPromise);
 
-                            case 13:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
+              case 4:
+                data = _context.sent;
 
-            function getConfig() {
-                return _ref.apply(this, arguments);
+                if (data.config) {
+                  _context.next = 7;
+                  break;
+                }
+
+                throw new Error("zip file does not contain config.json");
+
+              case 7:
+                folder.config = data.config;
+
+              case 8:
+                config = folder.config;
+                return _context.abrupt("return", { folder: folder, config: config });
+
+              case 10:
+              case "end":
+                return _context.stop();
             }
+          }
+        }, _callee, this);
+      }));
 
-            return getConfig;
-        }()
-    }, {
-        key: 'setConfig',
-        value: function () {
-            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_ref2) {
-                var config = _ref2.config;
-                return regeneratorRuntime.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                if (!(config && (typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object')) {
-                                    _context2.next = 10;
-                                    break;
-                                }
+      function getConfig() {
+        return _ref.apply(this, arguments);
+      }
 
-                                if (!(this.name && config.name !== this.name)) {
-                                    _context2.next = 3;
-                                    break;
-                                }
+      return getConfig;
+    }()
+  }, {
+    key: "setConfig",
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                throw new Error("cannot setConfig, zip-based study folder is read only");
 
-                                throw new Error('mismatch at StudyFolder:setConfig configuration name ' + config.name + ' should equal the folder name ' + this.name);
-
-                            case 3:
-                                _context2.next = 5;
-                                return this.upload({ name: 'config.json', contents: config });
-
-                            case 5:
-                                if (!(this.description !== config.description)) {
-                                    _context2.next = 10;
-                                    break;
-                                }
-
-                                this.description = config.description;
-
-                                if (this.readOnly) {
-                                    _context2.next = 10;
-                                    break;
-                                }
-
-                                _context2.next = 10;
-                                return this.update({ description: config.description });
-
-                            case 10:
-                                return _context2.abrupt('return', this);
-
-                            case 11:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this);
-            }));
-
-            function setConfig(_x) {
-                return _ref3.apply(this, arguments);
+              case 1:
+              case "end":
+                return _context2.stop();
             }
+          }
+        }, _callee2, this);
+      }));
 
-            return setConfig;
-        }()
-    }, {
-        key: 'unimplemented',
-        value: function () {
-            var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(what) {
-                return regeneratorRuntime.wrap(function _callee3$(_context3) {
-                    while (1) {
-                        switch (_context3.prev = _context3.next) {
-                            case 0:
-                                throw new Error(what + ' is unimplemented in StudyFolder base class and needs to be defined in a subclass');
+      function setConfig() {
+        return _ref2.apply(this, arguments);
+      }
 
-                            case 1:
-                            case 'end':
-                                return _context3.stop();
-                        }
-                    }
-                }, _callee3, this);
-            }));
+      return setConfig;
+    }()
+  }, {
+    key: "search",
+    value: function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(name) {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (!(name === this.zipName || name === undefined)) {
+                  _context3.next = 2;
+                  break;
+                }
 
-            function unimplemented(_x2) {
-                return _ref4.apply(this, arguments);
+                return _context3.abrupt("return", [{
+                  id: 1,
+                  name: this.zipName,
+                  mimeType: 'application/zip',
+                  size: this.zipSize
+                }]);
+
+              case 2:
+                return _context3.abrupt("return", []);
+
+              case 3:
+              case "end":
+                return _context3.stop();
             }
+          }
+        }, _callee3, this);
+      }));
 
-            return unimplemented;
-        }()
-    }, {
-        key: 'search',
-        value: function () {
-            var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-                return regeneratorRuntime.wrap(function _callee4$(_context4) {
-                    while (1) {
-                        switch (_context4.prev = _context4.next) {
-                            case 0:
-                                // (name)
-                                this.unimplemented('search');
+      function search(_x) {
+        return _ref3.apply(this, arguments);
+      }
 
-                            case 1:
-                            case 'end':
-                                return _context4.stop();
-                        }
-                    }
-                }, _callee4, this);
-            }));
+      return search;
+    }()
+  }, {
+    key: "download",
+    value: function () {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_ref4) {
+        var name = _ref4.name,
+            id = _ref4.id;
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                if (!(name === this.zipName || id === 1)) {
+                  _context4.next = 2;
+                  break;
+                }
 
-            function search() {
-                return _ref5.apply(this, arguments);
+                return _context4.abrupt("return", this.zipPromise);
+
+              case 2:
+                throw new Error("StudyFolderForZip: file not found");
+
+              case 3:
+              case "end":
+                return _context4.stop();
             }
+          }
+        }, _callee4, this);
+      }));
 
-            return search;
-        }()
-    }, {
-        key: 'listFiles',
-        value: function () {
-            var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-                var _this2 = this;
+      function download(_x2) {
+        return _ref5.apply(this, arguments);
+      }
 
-                var files;
-                return regeneratorRuntime.wrap(function _callee5$(_context5) {
-                    while (1) {
-                        switch (_context5.prev = _context5.next) {
-                            case 0:
-                                _context5.next = 2;
-                                return this.search();
+      return download;
+    }()
+  }]);
 
-                            case 2:
-                                files = _context5.sent;
-
-                                if (this.hintFileId) {
-                                    files = (0, _arrayPrefer2.default)(files, function (f) {
-                                        return f.id === _this2.hintFileId;
-                                    }, 1);
-                                }
-                                return _context5.abrupt('return', files);
-
-                            case 5:
-                            case 'end':
-                                return _context5.stop();
-                        }
-                    }
-                }, _callee5, this);
-            }));
-
-            function listFiles() {
-                return _ref6.apply(this, arguments);
-            }
-
-            return listFiles;
-        }()
-    }, {
-        key: 'fileId',
-        value: function () {
-            var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(name) {
-                var files, fileId;
-                return regeneratorRuntime.wrap(function _callee6$(_context6) {
-                    while (1) {
-                        switch (_context6.prev = _context6.next) {
-                            case 0:
-                                _context6.next = 2;
-                                return this.search(name);
-
-                            case 2:
-                                files = _context6.sent;
-                                fileId = files && files[0] && files[0].id;
-                                return _context6.abrupt('return', fileId);
-
-                            case 5:
-                            case 'end':
-                                return _context6.stop();
-                        }
-                    }
-                }, _callee6, this);
-            }));
-
-            function fileId(_x3) {
-                return _ref7.apply(this, arguments);
-            }
-
-            return fileId;
-        }()
-    }, {
-        key: 'download',
-        value: function () {
-            var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-                return regeneratorRuntime.wrap(function _callee7$(_context7) {
-                    while (1) {
-                        switch (_context7.prev = _context7.next) {
-                            case 0:
-                                // ({name,id})
-                                this.unimplemented('download');
-
-                            case 1:
-                            case 'end':
-                                return _context7.stop();
-                        }
-                    }
-                }, _callee7, this);
-            }));
-
-            function download() {
-                return _ref8.apply(this, arguments);
-            }
-
-            return download;
-        }()
-    }, {
-        key: 'update',
-        value: function () {
-            var _ref9 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-                return regeneratorRuntime.wrap(function _callee8$(_context8) {
-                    while (1) {
-                        switch (_context8.prev = _context8.next) {
-                            case 0:
-                                if (!this.readOnly) {
-                                    _context8.next = 2;
-                                    break;
-                                }
-
-                                throw new Error("cannot update readOnly StudyFolder");
-
-                            case 2:
-                                this.unimplemented('update');
-
-                            case 3:
-                            case 'end':
-                                return _context8.stop();
-                        }
-                    }
-                }, _callee8, this);
-            }));
-
-            function update() {
-                return _ref9.apply(this, arguments);
-            }
-
-            return update;
-        }()
-    }, {
-        key: 'upload',
-        value: function () {
-            var _ref10 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
-                return regeneratorRuntime.wrap(function _callee9$(_context9) {
-                    while (1) {
-                        switch (_context9.prev = _context9.next) {
-                            case 0:
-                                if (!this.readOnly) {
-                                    _context9.next = 2;
-                                    break;
-                                }
-
-                                throw new Error("cannot upload readOnly StudyFolder");
-
-                            case 2:
-                                this.unimplemented('upload');
-
-                            case 3:
-                            case 'end':
-                                return _context9.stop();
-                        }
-                    }
-                }, _callee9, this);
-            }));
-
-            function upload() {
-                return _ref10.apply(this, arguments);
-            }
-
-            return upload;
-        }()
-    }]);
-
-    return StudyFolder;
-}();
+  return StudyFolderForZip;
+}(_singleMarketRobotSimulatorDbStudyfolder2.default);
