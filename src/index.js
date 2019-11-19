@@ -3,7 +3,7 @@
 
 /* eslint-disable no-console */
 import openZip from "single-market-robot-simulator-openzip";
-import StudyFolder from "single-market-robot-simulator-db-studyfolder";
+import { StudyFolder } from "single-market-robot-simulator-db-studyfolder";
 
 export class StudyFolderForZip extends StudyFolder {
 
