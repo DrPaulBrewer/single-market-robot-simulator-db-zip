@@ -39,9 +39,8 @@ var StudyFolderForZip = exports.StudyFolderForZip = function (_StudyFolder) {
 
     if (!_this.zipPromise) throw new Error("StudyFolderForZip: zipPromise required");
     if (!_this.zipName) throw new Error("StudyFolderForZip: zipName required");
-    if (typeof _this.zipSize !== 'number') throw new Error("StudyFolderForZip: zipSize required");
     _this.readOnly = true;
-    if (!_this.name) _this.name = "External .zip file: " + _this.zipName;
+    if (!_this.name) _this.name = "External .zip file " + _this.zipName;
     if (!_this.description) _this.description = '';
     return _this;
   }
@@ -136,8 +135,7 @@ var StudyFolderForZip = exports.StudyFolderForZip = function (_StudyFolder) {
                 return _context3.abrupt("return", [{
                   id: 1,
                   name: this.zipName,
-                  mimeType: 'application/zip',
-                  size: this.zipSize
+                  mimeType: 'application/zip'
                 }]);
 
               case 2:
