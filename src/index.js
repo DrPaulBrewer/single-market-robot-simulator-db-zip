@@ -11,9 +11,8 @@ export class StudyFolderForZip extends StudyFolder {
     super(props);
     if (!this.zipPromise) throw new Error("StudyFolderForZip: zipPromise required");
     if (!this.zipName) throw new Error("StudyFolderForZip: zipName required");
-    if (typeof(this.zipSize)!=='number') throw new Error("StudyFolderForZip: zipSize required");
     this.readOnly = true;
-    if (!this.name) this.name = "External .zip file: "+this.zipName;
+    if (!this.name) this.name = "External .zip file "+this.zipName;
     if (!this.description) this.description = '';
   }
 
@@ -39,8 +38,7 @@ export class StudyFolderForZip extends StudyFolder {
         {
           id: 1,
           name: this.zipName,
-          mimeType: 'application/zip',
-          size: this.zipSize
+          mimeType: 'application/zip'
         }
       ];
     }
