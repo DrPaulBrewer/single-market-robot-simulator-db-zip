@@ -38,7 +38,8 @@ export class StudyFolderForZip extends StudyFolder {
         {
           id: 1,
           name: this.zipName,
-          mimeType: 'application/zip'
+          mimeType: 'application/zip',
+          size: this.zipSize
         }
       ];
     }

@@ -51,19 +51,18 @@ class StudyFolderForZip extends _singleMarketRobotSimulatorDbStudyfolder.StudyFo
       return [{
         id: 1,
         name: this.zipName,
-        mimeType: 'application/zip'
+        mimeType: 'application/zip',
+        size: this.zipSize
       }];
     }
 
     return [];
   }
 
-  async download(_ref) {
-    let {
-      name,
-      id
-    } = _ref;
-
+  async download({
+    name,
+    id
+  }) {
     if (name === this.zipName || id === 1) {
       return this.zipPromise;
     }
