@@ -2,14 +2,11 @@
   "name": "single-market-robot-simulator-db-zip",
   "version": "2.1.0",
   "description": "readonly studyfolder class for zip file blobs",
-  "main": "build/index.js",
-  "jsnext:main": "src/index.js",
+  "export": "./src/index.mjs",
   "scripts": {
-    "clean": "rm -rf ./build ./doc ; mkdir ./build",
-    "build": "node_modules/.bin/babel src --out-dir build",
-    "doc": "node_modules/.bin/esdoc -c esdoc.json",
-    "lint": "node_modules/.bin/eslint src/**.js",
-    "go": "npm run clean && npm run lint && npm run build"
+    "lint": "node_modules/.bin/eslint src/**.mjs",
+    "test": "c8 --reporter=text mocha  --slow 50 --timeout 60000",
+    "go": "npm run lint && npm run test && npm run doc"
   },
   "author": "drpaulbrewer@eaftc.com",
   "license": "MIT",
@@ -18,15 +15,13 @@
     "url": "https://github.com/drpaulbrewer/single-market-robot-simulator-db-zip"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.4",
-    "@babel/polyfill": "^7.8.3",
-    "@babel/preset-env": "^7.8.4",
-    "@babel/register": "^7.8.3",
-    "esdoc": "^1.1.0",
-    "eslint": "^6.8.0"
+    "c8": "^7.11.2",
+    "eslint": "^8.14.0",
+    "mocha": "^10.0.0",
+    "should": "^13.2.3"
   },
   "dependencies": {
-    "single-market-robot-simulator-db-studyfolder": "^2.0.0"
+    "single-market-robot-simulator-db-studyfolder": "^3.1.0",
+    "single-market-robot-simulator-openzip": "^4.2.0"
   }
 }
