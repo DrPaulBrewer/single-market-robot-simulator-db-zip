@@ -1,6 +1,6 @@
 {
   "name": "single-market-robot-simulator-db-zip",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "readonly studyfolder class for zip file blobs",
   "exports": "./src/index.mjs",
   "scripts": {
